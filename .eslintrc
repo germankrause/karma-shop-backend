@@ -1,0 +1,28 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "fix": true
+  },
+  "rules": {
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "linebreak-style": "off",
+    "prefer-destructuring": "off",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off",
+    "camelcase": "off",
+    "no-prototype-builtins": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off",
+    "no-loop-func": "off",
+    "consistent-return":"off",
+    "import/order":"off",
+    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }]
+  },
+}
