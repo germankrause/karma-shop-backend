@@ -14,6 +14,15 @@ function requireFolder(path) {
   return modules;
 }
 
+const randomString = (length = 10) => {
+  let string = '';
+  while (string.length < length) {
+    string += Math.random().toString(36).substr(2, 10);
+  }
+  return string.substr(0, length);
+};
+
 module.exports = {
   requireFolder,
+  randomString,
 };
