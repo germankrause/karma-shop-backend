@@ -4,8 +4,8 @@ const { ObjectId: ID } = mongoose;
 
 const schema = new mongoose.Schema({
   id: ID,
-  src: String,
   user: { type: ID, ref: 'User' },
+  src: String,
   type: String,
   name: String,
 });

@@ -1,11 +1,14 @@
-const User = require('./User');
-const Item = require('./Item');
-const Feedback = require('./Feedback');
-const Attachment = require('./Attachment');
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
+const fs = require('fs');
 
-module.exports = {
-  User,
-  Attachment,
-  Feedback,
-  Item,
-};
+const allFiles = fs.readdirSync(__dirname);
+const models = allFiles.map(file => file.replace(/.js$/, ''))
+  .filter(file => file !== 'index');
+
+const modules = {};
+for (const model of models) {
+  modules[model] = require(`./${model}`);
+}
+
+module.exports = modules;
