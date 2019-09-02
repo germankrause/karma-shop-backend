@@ -4,11 +4,14 @@ const models = require('./models');
 
 const logger = new Logger(console);
 
-mongoose.connect('mongodb://localhost/karma-shop', { useNewUrlParser: true });
+mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', logger.error);
 db.once('open', () => {
   logger.log('DB connected');
 });
 
-module.exports = models;
+module.exports = {
+  db,
+  models,
+};

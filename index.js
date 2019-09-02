@@ -1,8 +1,11 @@
-const db = require('./database');
+require('dotenv').config();
+const { db, models } = require('./database');
 const Koa = require('koa');
 const router = require('./router');
 
-const app = new Koa();
-app.context.db = db;
-router(app);
-app.listen(3333);
+db.once('open', () => {
+  const app = new Koa();
+  app.context.db = models;
+  router(app);
+  app.listen(3333);
+});
