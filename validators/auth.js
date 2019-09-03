@@ -45,4 +45,27 @@ async function register(ctx, next) {
   await next();
 }
 
-module.exports = { register };
+async function login(ctx, next) {
+  await validate(ctx.request.body, {
+    email: {
+      presence: true,
+      email: true,
+      exists: {
+        Model: ctx.db.User,
+      },
+    },
+    password: {
+      presence: true,
+      length: {
+        minimum: 8,
+        maximum: ctx.config.string,
+      },
+    },
+  });
+  await next();
+}
+
+module.exports = {
+  register,
+  login,
+};

@@ -10,4 +10,5 @@ module.exports = function router(app) {
     }
   }
   setRoute('post /auth/register', [validators.auth.register, controllers.auth.register]);
+  setRoute('post /auth/login', [validators.auth.login, controllers.auth.login]);
 };
