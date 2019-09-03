@@ -1,16 +1,44 @@
 const validate = require('./validate');
 
-async function register({ request }, next) {
-  await validate(request.body, {
+async function register(ctx, next) {
+  await validate(ctx.request.body, {
     email: {
       presence: true,
       email: true,
+      length: {
+        maximum: ctx.config.string,
+      },
+      unique: {
+        Model: ctx.db.User,
+      },
     },
     password: {
       presence: true,
       length: {
         minimum: 8,
-        maximum: 60,
+        maximum: ctx.config.string,
+      },
+    },
+    firstName: {
+      presence: true,
+      length: {
+        maximum: ctx.config.string,
+      },
+    },
+    lastName: {
+      presence: true,
+      length: {
+        maximum: ctx.config.string,
+      },
+    },
+    phone: {
+      presence: true,
+      length: {
+        minimum: 10,
+        maximum: 15,
+      },
+      unique: {
+        Model: ctx.db.User,
       },
     },
   });
@@ -18,12 +46,3 @@ async function register({ request }, next) {
 }
 
 module.exports = { register };
-
-/**
-
-  firstName: String,
-  lastName: String,
-  password: String,
-  phone: String,
-
- */

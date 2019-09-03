@@ -1,4 +1,9 @@
 const validateJS = require('validate.js');
+const extend = require('./extend');
+
+for (const method of Reflect.ownKeys(extend)) {
+  validateJS.validators[method] = extend[method];
+}
 
 async function validate(data, rules) {
   try {

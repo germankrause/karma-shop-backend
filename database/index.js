@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const logger = require('../logger');
 const models = require('./models');
 
-mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`, { useNewUrlParser: true });
+mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+});
 const db = mongoose.connection;
 db.on('error', logger.error);
 db.once('open', () => {

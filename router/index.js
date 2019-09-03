@@ -9,5 +9,5 @@ module.exports = function router(app) {
       app.use(route[method](routeName, handler));
     }
   }
-  setRoute('post /register', [validators.auth.register, controllers.auth.register]);
+  setRoute('post /auth/register', [validators.auth.register, controllers.auth.register]);
 };
