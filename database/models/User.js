@@ -43,7 +43,7 @@ schema.methods.jwtSign = async function jwtSign() {
 
 schema.statics.jwtVerify = async function jwtVerify(token) {
   const { _id } = await verify(token, process.env.APP_KEY);
-  return await this.find({ _id });
+  return await this.findOne({ _id });
 };
 
 module.exports = mongoose.model('User', schema);

@@ -8,6 +8,8 @@ describe('Authentication', () => {
 
   const email = randomEmail();
   const password = randomString();
+  let token;
+
   describe('Registration', () => {
     const route = `${prefix}/register`;
 
@@ -101,6 +103,7 @@ describe('Authentication', () => {
           },
         });
         expect(response.data.token).toBeDefined();
+        token = response.data.token;
       } catch (error) {
         expect(error).toBe(null);
       }
@@ -136,6 +139,61 @@ describe('Authentication', () => {
           data: {
             password: [expect.any(String)],
           },
+        });
+      }
+    });
+  });
+
+  describe('Profile', () => {
+    const route = `${prefix}/profile`;
+
+    test('Success retrieve', async () => {
+      expect.assertions(1);
+      try {
+        const response = await axios.get(route, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        expect(response).toMatchObject({
+          status: 200,
+          data: {
+            _id: expect.any(String),
+            email: expect.any(String),
+            firstName: expect.any(String),
+            lastName: expect.any(String),
+            phone: expect.any(String),
+          },
+        });
+      } catch (error) {
+        expect(error).toBe(null);
+      }
+    });
+
+    test('Invalid token', async () => {
+      expect.assertions(1);
+      try {
+        await axios.get(route, {
+          headers: {
+            Authorization: `Bearer ${token}s`,
+          },
+        });
+      } catch ({ response }) {
+        expect(response).toMatchObject({
+          status: 401,
+          data: 'Invalid token',
+        });
+      }
+    });
+
+    test('Get without token', async () => {
+      expect.assertions(1);
+      try {
+        await axios.get(route);
+      } catch ({ response }) {
+        expect(response).toMatchObject({
+          status: 401,
+          data: 'Unauthorized',
         });
       }
     });

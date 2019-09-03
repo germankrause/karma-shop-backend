@@ -19,7 +19,12 @@ async function login({ request, response, db }) {
   }
 }
 
+async function getProfile({ response, user }) {
+  response.body = user.toJSON();
+}
+
 module.exports = {
   register,
   login,
+  getProfile,
 };
