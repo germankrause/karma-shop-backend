@@ -7,7 +7,6 @@ const schema = new mongoose.Schema({
   attachments: [{ type: ID, ref: 'Attachment' }],
   price: Number,
   size: Number,
-  image: String,
   name: String,
   description: String,
   views: Number,

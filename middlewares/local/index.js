@@ -1,3 +1,12 @@
+const path = require('path');
+const filesParser = require('koa-body')({
+  multipart: true,
+  formidable: {
+    uploadDir: path.join(__dirname, '../../tmp'),
+    keepExtensions: true,
+  },
+});
+
 async function auth(ctx, next) {
   if (!ctx.user) {
     ctx.throw(401);
@@ -5,4 +14,7 @@ async function auth(ctx, next) {
   await next();
 }
 
-module.exports = { auth };
+module.exports = {
+  auth,
+  filesParser,
+};

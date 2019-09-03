@@ -13,4 +13,6 @@ module.exports = function router(app) {
   setRoute('post /auth/register', [validators.auth.register, controllers.auth.register]);
   setRoute('post /auth/login', [validators.auth.login, controllers.auth.login]);
   setRoute('get /auth/profile', [middlewares.auth, controllers.auth.getProfile]);
+
+  setRoute('post /attachments', [middlewares.auth, middlewares.filesParser, controllers.attachments.create]);
 };
