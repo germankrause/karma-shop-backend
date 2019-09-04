@@ -20,4 +20,9 @@ module.exports = function router(app) {
     middlewares.fileTypes(['image']),
     controllers.attachments.create,
   ]);
+
+  setRoute('post /items', [validators.items.create, controllers.items.create]);
+  setRoute('get /items', [controllers.items.index]);
+  setRoute('put /items', [validators.items.owner, validators.items.create, controllers.items.edit]);
+  setRoute('get /items/:id', [controllers.items.show]);
 };

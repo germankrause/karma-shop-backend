@@ -22,7 +22,7 @@ const randomString = (length = 10) => {
   return string.substr(0, length);
 };
 
-const randomDigits = (length) => {
+const randomDigits = (length = 10) => {
   let string = '';
   while (string.length < length) {
     string += Math.random().toString().substr(2, 10);

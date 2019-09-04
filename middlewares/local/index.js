@@ -1,3 +1,5 @@
+const fs = require('fs');
+const util = require('util');
 const path = require('path');
 const filesParser = require('koa-body')({
   multipart: true,
@@ -7,13 +9,21 @@ const filesParser = require('koa-body')({
   },
 });
 
+const deleteFile = util.promisify(fs.unlink);
+
 async function fileParser(ctx, next) {
   const nextReturnCtx = context => context;
   await filesParser(ctx, nextReturnCtx);
   const key = Reflect.ownKeys(ctx.request.files)[0];
   ctx.request.file = ctx.request.files[key];
   ctx.request.file.key = key;
-  await next();
+  try {
+    await next();
+  } finally { // delete files anyway, even when error occured
+    for (const fileKey of Reflect.ownKeys(ctx.request.files)) {
+      await deleteFile(ctx.request.files[fileKey].path);
+    }
+  }
 }
 
 function fileTypes(types) {

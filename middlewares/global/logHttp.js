@@ -7,12 +7,12 @@ async function logHttp({ request, response }, next) {
     body: request.body,
     headers: request.headers,
   };
-  logger.log('Request', requestData);
   await next();
   const responseData = {
     status: response.status,
     body: response.body,
   };
+  logger.log('Request', requestData);
   logger.log('Response', responseData);
 }
 

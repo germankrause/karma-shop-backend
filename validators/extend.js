@@ -1,3 +1,5 @@
+const validateJS = require('validate.js');
+
 async function unique(value, { Model }, field) {
   const data = {};
   data[field] = value;
@@ -14,7 +16,28 @@ async function exists(value, { Model }, field) {
   return `^${Model.modelName} with this ${field} was not found`;
 }
 
+async function owner(value, { Model, user }, field) {
+  field = field.split('.').pop();
+  const data = { user };
+  data[field] = value;
+  const exist = await Model.find(data);
+  if (exist.length) return;
+  return `^You aren't owner of this ${Model.modelName.toLowerCase()}`;
+}
+
+async function array(values, rules) {
+  const promises = [];
+  if (!values) return 'must be an array';
+  for (const value of values) {
+    const promise = validateJS.async(value, rules);
+    promises.push(promise);
+  }
+  await Promise.all(promises);
+}
+
 module.exports = {
   unique,
   exists,
+  owner,
+  array,
 };

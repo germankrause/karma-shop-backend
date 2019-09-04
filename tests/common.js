@@ -33,7 +33,7 @@ const createAttachment = async (user) => {
   if (!user) {
     user = await createUser();
   }
-  const response = await sendFile(`${__dirname}/files/image.jpg`, null, user);
+  const response = await sendFile(`${__dirname}/files/image.jpg`, undefined, user);
   return response.data;
 };
 

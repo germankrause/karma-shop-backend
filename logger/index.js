@@ -1,6 +1,7 @@
 class Logger {
   constructor() {
     const envProviders = {
+      testing: [console],
       development: [console],
       production: [],
     };

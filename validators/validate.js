@@ -5,9 +5,9 @@ for (const method of Reflect.ownKeys(extend)) {
   validateJS.validators[method] = extend[method];
 }
 
-async function validate(data, rules) {
+async function validate(...args) {
   try {
-    await validateJS.async(data, rules);
+    await validateJS.async(...args);
   } catch (fields) {
     const error = new Error();
     error.name = 'ValidationError';

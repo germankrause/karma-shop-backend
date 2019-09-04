@@ -3,8 +3,7 @@ const s3 = require('../services/s3');
 async function create({
   request, response, db, user,
 }) {
-  const key = Reflect.ownKeys(request.files)[0];
-  const file = request.files[key];
+  const file = request.files[request.file.key];
   const name = file.name;
   const type = name.split('.').pop();
   const { Location: src } = await s3.upload(file.path);
