@@ -9,7 +9,12 @@ const s3 = new aws.S3({
   apiVersion: '2006-03-01',
 });
 
+const fakeUpload = async () => ({
+  Location: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${+(new Date())}_${randomString()}.jpg`,
+});
+
 const upload = async (path) => {
+  if (process.env.NODE_ENV === 'testing') return await fakeUpload();
   const fileStream = fs.createReadStream(path);
   const extention = path.split('.').pop();
   const uploadPromise = new Promise((resolve, reject) => {

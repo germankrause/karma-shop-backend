@@ -14,7 +14,7 @@ async function create({
     type,
     name,
   });
-  response.body = attachment;
+  response.body = attachment.toJSON();
 }
 
 module.exports = {
