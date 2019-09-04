@@ -1,7 +1,6 @@
 const axios = require('./axios');
 const { randomString, randomDigits } = require('../helpers');
-
-const randomEmail = () => `${randomString()}@mail.com`;
+const { randomEmail } = require('./common');
 
 describe('Authentication', () => {
   const prefix = 'auth';

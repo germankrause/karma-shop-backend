@@ -5,6 +5,7 @@ async function logHttp({ request, response }, next) {
     route: `${request.method} ${request.path}`,
     query: request.query,
     body: request.body,
+    headers: request.headers,
   };
   logger.log('Request', requestData);
   await next();

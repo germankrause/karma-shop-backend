@@ -4,11 +4,19 @@ async function errorHandler(ctx, next) {
   try {
     await next();
   } catch (error) {
+    const validationHandle = ({ response }) => {
+      response.status = 400;
+      response.message = error.name;
+      response.body = error.fields;
+    };
     switch (error.name) {
       case 'ValidationError':
-        ctx.status = 400;
-        ctx.message = error.name;
-        ctx.body = error.fields;
+        validationHandle(ctx);
+        break;
+      case 'BadRequestError':
+        if (error.message === 'ValidationError') {
+          validationHandle(ctx);
+        }
         break;
       case 'JsonWebTokenError':
         ctx.status = 401;

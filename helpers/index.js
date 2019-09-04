@@ -30,8 +30,15 @@ const randomDigits = (length) => {
   return string.substr(0, length);
 };
 
+function validationError(key, message) {
+  const response = { fields: {} };
+  response.fields[key] = [message];
+  this.throw(400, 'ValidationError', response);
+}
+
 module.exports = {
   requireFolder,
   randomString,
   randomDigits,
+  validationError,
 };
