@@ -156,4 +156,17 @@ describe('Items', () => {
       }
     });
   });
+
+  describe('Delete', () => {
+    test('Success', async () => {
+      expect.assertions(2);
+      try {
+        const response = await axios.delete(`${route}/${item._id}`);
+        expect(response.status).toBe(200);
+        await axios.delete(`${route}/${item._id}`);
+      } catch ({ response }) {
+        expect(response.status).toBe(404);
+      }
+    });
+  });
 });

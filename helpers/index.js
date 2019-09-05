@@ -36,9 +36,19 @@ function validationError(key, message) {
   this.throw(400, 'ValidationError', response);
 }
 
+function ctxWithParams(ctx, ...args) {
+  const next = args.pop();
+  return {
+    ctx,
+    next,
+    params: args,
+  };
+}
+
 module.exports = {
   requireFolder,
   randomString,
   randomDigits,
   validationError,
+  ctxWithParams,
 };

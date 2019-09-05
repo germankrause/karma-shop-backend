@@ -25,4 +25,5 @@ module.exports = function router(app) {
   setRoute('get /items', [controllers.items.index]);
   setRoute('put /items', [validators.items.owner, validators.items.create, controllers.items.edit]);
   setRoute('get /items/:id', [controllers.items.show]);
+  setRoute('delete /items/:id', [controllers.items.remove]);
 };

@@ -1,3 +1,5 @@
+const { ctxWithParams } = require('../helpers');
+
 async function create({
   request, user, response, db,
 }) {
@@ -40,9 +42,22 @@ async function show({ response, db }, id) {
   response.body = item.toJSON();
 }
 
+async function remove(...args) {
+  const { ctx, params } = ctxWithParams(...args);
+  const { db, user, response } = ctx;
+  const item = await db.Item.findOne({
+    _id: params[0],
+    user,
+  });
+  if (!item) return ctx.throw(404, 'Item not found');
+  await item.delete();
+  response.body = item.toJSON();
+}
+
 module.exports = {
   create,
   index,
   edit,
   show,
+  remove,
 };
