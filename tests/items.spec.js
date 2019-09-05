@@ -2,7 +2,6 @@ const { createUser, createAttachment } = require('./common');
 const { randomString, randomDigits } = require('../helpers');
 const axios = require('./axios');
 
-
 describe('Items', () => {
   const route = 'items';
 

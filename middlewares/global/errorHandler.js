@@ -27,7 +27,9 @@ async function errorHandler(ctx, next) {
         ctx.body = 'Unauthorized';
         break;
       default:
-        logger.error(error);
+        if (!error.status || error.status >= 500) {
+          logger.error(error);
+        }
         break;
     }
   }

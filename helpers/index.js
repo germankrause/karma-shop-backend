@@ -14,6 +14,8 @@ function requireFolder(path) {
   return modules;
 }
 
+const random = (from, to) => Math.floor(Math.random() * to) + from;
+
 const randomString = (length = 10) => {
   let string = '';
   while (string.length < length) {
@@ -47,6 +49,7 @@ function ctxWithParams(ctx, ...args) {
 
 module.exports = {
   requireFolder,
+  random,
   randomString,
   randomDigits,
   validationError,

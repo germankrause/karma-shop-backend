@@ -37,9 +37,33 @@ const createAttachment = async (user) => {
   return response.data;
 };
 
+const createItem = async (user, attachments = []) => {
+  if (!user) {
+    user = await createUser();
+  }
+  if (!attachments.length) {
+    const attachment = await createAttachment(user);
+    attachments.push(attachment);
+  }
+  const response = await axios.post('items', {
+    attachments,
+    price: +randomDigits(),
+    size: +randomDigits(),
+    name: randomString(),
+    description: randomString(),
+  }, {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  });
+  return response.data;
+};
+
+
 module.exports = {
   randomEmail,
   createUser,
   sendFile,
   createAttachment,
+  createItem,
 };
