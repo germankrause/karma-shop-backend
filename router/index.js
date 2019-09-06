@@ -26,6 +26,7 @@ module.exports = function router(app) {
   setRoute('put /items', [validators.items.owner, validators.items.create, controllers.items.edit]);
   setRoute('get /items/:id', [controllers.items.show]);
   setRoute('delete /items/:id', [controllers.items.remove]);
+  setRoute('post /items/buy', [validators.items.buy, controllers.items.buy]);
 
   setRoute('post /feedbacks', [validators.feedbacks.create, controllers.feedbacks.create]);
   setRoute('delete /feedbacks/:id', [controllers.feedbacks.remove]);

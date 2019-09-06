@@ -61,7 +61,27 @@ async function owner(ctx, next) {
   await next();
 }
 
+async function buy(ctx, next) {
+  await validate(ctx.request.body, {
+    items: {
+      presence: true,
+      array: {
+        _id: {
+          exists: {
+            Model: ctx.db.Item,
+            where: {
+              buyer: null,
+            },
+          },
+        },
+      },
+    },
+  });
+  await next();
+}
+
 module.exports = {
   create,
   owner,
+  buy,
 };

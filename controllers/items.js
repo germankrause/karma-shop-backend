@@ -12,12 +12,23 @@ async function create({
   response.body = item.toJSON();
 }
 
-async function index({ user, response, db }) {
-  const items = await db.Item.find({
-    user,
-  }).populate('user')
+async function index({ request, response, db }) {
+  const total = await db.Item.countDocuments({ buyer: null });
+  const page = +request.query.page || 0;
+  const perPage = +request.query.perPage || 20;
+  const items = await db.Item.find({ buyer: null })
+    .limit(perPage)
+    .skip(page * perPage)
+    .populate('user')
     .populate('attachments');
-  response.body = items.map(item => item.toJSON());
+  response.body = {
+    pagination: {
+      total,
+      perPage,
+      page,
+    },
+    items: items.map(item => item.toJSON()),
+  };
 }
 
 async function edit({ request, response, db }) {
@@ -54,10 +65,24 @@ async function remove(...args) {
   response.body = item.toJSON();
 }
 
+async function buy({
+  request, response, user, db,
+}) {
+  const itemIds = request.body.items.map(item => item._id);
+  await db.Item.updateMany({
+    _id: { $in: itemIds },
+  }, {
+    buyer: user,
+  });
+  const items = await db.Item.find({ _id: { $in: itemIds } });
+  response.body = items.map(item => item.toJSON());
+}
+
 module.exports = {
   create,
   index,
   edit,
   show,
   remove,
+  buy,
 };

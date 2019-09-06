@@ -8,9 +8,9 @@ async function unique(value, { Model }, field) {
   return `^This ${field} is already taken`;
 }
 
-async function exists(value, { Model, field }, ...args) {
+async function exists(value, { Model, field, where = {} }, ...args) {
   if (!field) field = args[0];
-  const data = {};
+  const data = { ...where };
   data[field] = value;
   const exist = await Model.find(data);
   if (exist.length) return;

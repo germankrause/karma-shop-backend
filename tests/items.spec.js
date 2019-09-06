@@ -1,4 +1,4 @@
-const { createUser, createAttachment } = require('./common');
+const { createUser, createAttachment, createItem } = require('./common');
 const { randomString, randomDigits } = require('../helpers');
 const axios = require('./axios');
 
@@ -89,27 +89,34 @@ describe('Items', () => {
   });
 
   describe('Index', () => {
-    test('Success', async () => {
-      expect.assertions(1);
+    test('Pagination', async () => {
       try {
-        const response = await axios.get(route);
+        expect.assertions(1);
+        const response = await axios.get(`${route}?perPage=1`);
         expect(response).toMatchObject({
           status: 200,
-          data: [{
-            attachments: [{
-              _id: expect.any(String),
-              src: expect.any(String),
-              user: expect.any(String),
-            }],
-            user: {
-              _id: expect.any(String),
+          data: {
+            pagination: {
+              total: expect.any(Number),
+              page: expect.any(Number),
+              perPage: expect.any(Number),
             },
-            price: expect.any(Number),
-            size: expect.any(Number),
-            name: expect.any(String),
-            description: expect.any(String),
-            views: 0,
-          }],
+            items: [{
+              attachments: [{
+                _id: expect.any(String),
+                src: expect.any(String),
+                user: expect.any(String),
+              }],
+              user: {
+                _id: expect.any(String),
+              },
+              price: expect.any(Number),
+              size: expect.any(Number),
+              name: expect.any(String),
+              description: expect.any(String),
+              views: expect.any(Number),
+            }],
+          },
         });
       } catch (error) {
         expect(error).toBe(null);
@@ -165,6 +172,27 @@ describe('Items', () => {
         await axios.delete(`${route}/${item._id}`);
       } catch ({ response }) {
         expect(response.status).toBe(404);
+      }
+    });
+  });
+
+  describe('Buy', () => {
+    test('Success', async () => {
+      expect.assertions(1);
+      try {
+        item = await createItem();
+        const response = await axios.post(`${route}/buy`, {
+          items: [item],
+        });
+        expect(response).toMatchObject({
+          status: 200,
+          data: [{
+            _id: expect.any(String),
+            buyer: expect.any(String),
+          }],
+        });
+      } catch (error) {
+        expect(error).toBe(null);
       }
     });
   });
