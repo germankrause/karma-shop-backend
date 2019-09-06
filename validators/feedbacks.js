@@ -9,6 +9,13 @@ async function create(ctx, next) {
         Model: ctx.db.User,
         field: '_id',
       },
+      whereHas: {
+        Model: ctx.db.Item,
+        where: {
+          user: ctx.request.body.userId,
+          buyer: ctx.user,
+        },
+      },
     },
     rating: {
       presence: true,

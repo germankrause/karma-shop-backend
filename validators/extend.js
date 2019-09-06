@@ -36,9 +36,16 @@ async function array(values, rules) {
   await Promise.all(promises);
 }
 
+async function whereHas(value, { Model, where = {} }) {
+  const exist = await Model.find(where);
+  if (exist.length) return;
+  return `^${Model.modelName} not found`;
+}
+
 module.exports = {
   unique,
   exists,
   owner,
   array,
+  whereHas,
 };

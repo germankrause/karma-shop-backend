@@ -8,13 +8,31 @@ describe('Feedbacks', () => {
   let user;
   let item;
   let feedback;
-  test('Create user and item', async () => {
+  test('Create user and buyed item', async () => {
     user = await createUser();
     axios.defaults.headers.common.Authorization = `Bearer ${user.token}`;
     item = await createItem();
+    await axios.post('items/buy', { items: [item] });
   });
 
   describe('Create', () => {
+    test('Fail before buy', async () => {
+      expect.assertions(1);
+      try {
+        const anotherUser = await createUser();
+        await axios.post(route, {
+          userId: item.user._id,
+          text: randomString(),
+          rating: random(1, 5),
+        }, {
+          headers: {
+            Authorization: `Bearer ${anotherUser.token}`,
+          },
+        });
+      } catch ({ response }) {
+        expect(response.status).toBe(400);
+      }
+    });
     test('Success', async () => {
       expect.assertions(1);
       try {
@@ -62,7 +80,7 @@ describe('Feedbacks', () => {
         expect(response).toMatchObject({
           status: 400,
           data: {
-            userId: [expect.any(String), expect.any(String)],
+            userId: [expect.any(String), expect.any(String), expect.any(String)],
             text: [expect.any(String)],
             rating: [expect.any(String)],
           },
